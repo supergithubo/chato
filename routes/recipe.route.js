@@ -13,3 +13,5 @@ router.route('/recipes')
               return res.json(recipes);
           });
     })
+    
+module.exports = router;
