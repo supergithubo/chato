@@ -1,5 +1,6 @@
 // models/postback.service.js
 
+var request = require("request");
 var sender = require('./sender.service');
 
 exports.process = function(event) {

@@ -1,5 +1,7 @@
 // models/sender.service.js
 
+var request = require("request");
+
 exports.send = function(id, message) {
     request({
         url: "https://graph.facebook.com/v2.10/me/messages",
