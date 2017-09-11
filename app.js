@@ -14,6 +14,9 @@ app.post("/webhook", function (req, res) {
                 if (event.postback) {
                     processPostback(event);
                 }
+                else if (event.message) {
+                    processMessage(event);
+                }
             });
         });
         res.sendStatus(200);
@@ -46,6 +49,24 @@ function processPostback(event) {
         sendMessage(senderId, { text: message });
     });
   }
+}
+
+function processMessage(event) {
+    if (!event.message.is_echo) {
+        var message = event.message;
+        var senderId = event.sender.id;
+
+        console.log("Received message from senderId: " + senderId);
+        console.log("Message is: " + JSON.stringify(message));
+
+        if (message.text) {
+            var formattedMsg = message.text.toLowerCase().trim();
+            
+            sendMessage(senderId, {text: formattedMsg});
+        } else if (message.attachments) {
+            sendMessage(senderId, {text: "Sorry, I don't understand your request."});
+        }
+    }
 }
 
 function sendMessage(recipientId, message) {
