@@ -28,7 +28,7 @@ router.route('/recipes')
     
 router.route('/recipes/:recipe_id')
     .get(function(req, res, next) {
-          recipeService.getRecipe(req.params.user_id, function(err, recipe) {
+          recipeService.getRecipe(req.params.recipe_id, function(err, recipe) {
                 if (err) return next(err);
                 if (!recipe) return res.status(404).send('Recipe not found');
                 
@@ -36,7 +36,7 @@ router.route('/recipes/:recipe_id')
           });
     })
     .put(function(req, res, next) {
-          recipeService.getRecipe(req.params.user_id, function(err, recipe) {
+          recipeService.getRecipe(req.params.recipe_id, function(err, recipe) {
                 if (err) return next(err);
                 if (!recipe) return res.status(404).send('Recipe not found');
                 
@@ -49,7 +49,7 @@ router.route('/recipes/:recipe_id')
           });
     })
     .delete(function(req, res, next) {
-          recipeService.getRecipe(req.params.user_id, function(err, recipe) {
+          recipeService.getRecipe(req.params.recipe_id, function(err, recipe) {
                 if (err) return next(err);
                 if (!recipe) return res.status(404).send('Recipe not found');
                 
