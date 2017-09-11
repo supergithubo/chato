@@ -16,6 +16,7 @@
     "express-validation": "^1.0.2",
     "joi": "^10.6.0",
     "mongoose": "^4.11.10",
+    "mongoose-unique-validator": "^1.0.5",
     "request": "^2.81.0"
   }
 }

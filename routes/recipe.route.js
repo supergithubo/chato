@@ -24,6 +24,41 @@ router.route('/recipes')
               
               return res.status(201).json(recipe);
           });
+    });
+    
+router.route('/recipes/:recipe_id')
+    .get(function(req, res, next) {
+          recipeService.getRecipe(req.params.user_id, function(err, recipe) {
+                if (err) return next(err);
+                if (!recipe) return res.status(404).send('Recipe not found');
+                
+                return res.json(recipe);
+          });
     })
+    .put(function(req, res, next) {
+          recipeService.getRecipe(req.params.user_id, function(err, recipe) {
+                if (err) return next(err);
+                if (!recipe) return res.status(404).send('Recipe not found');
+                
+                recipe.name = req.body.name !== undefined ? req.body.name : recipe.name;
+                recipeService.saveRecipe(recipe, function(err, recipe) {
+                    if (err) return next(err);
+                    
+                    return res.json(recipe);
+                })
+          });
+    })
+    .delete(function(req, res, next) {
+          recipeService.getRecipe(req.params.user_id, function(err, recipe) {
+                if (err) return next(err);
+                if (!recipe) return res.status(404).send('Recipe not found');
+                
+                recipeService.deleteRecipe(recipe, function(err) {
+                    if (err) return next(err);
+                    
+                    return res.status(204).send();
+                })
+          });
+    });
     
 module.exports = router;
