@@ -1,7 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 
-var webhookRouter = require("./routes/webhook");
+var webhookRouter = require("./routes/webhook.route");
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
