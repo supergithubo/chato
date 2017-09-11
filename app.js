@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 var app = express();
 
 var webhookRouter = require("./routes/webhook.route");
+var recipeRouter = require("./routes/recipe.route");
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -16,7 +17,7 @@ app.use(bodyParser.json());
 // Routes
 // =============================================================================
 
-app.use('/v1', [webhookRouter]);
+app.use('/v1', [webhookRouter, recipeRouter]);
 app.use(function(err, req, res, next) {
     console.log(err);
     if(err.name == 'ValidationError' || err.message == 'validation error') {
