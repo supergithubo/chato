@@ -3,6 +3,7 @@
 var express = require('express');
 var router = express.Router();
 var validateReq = require('express-validation');
+var scenario = require('../helpers/validation.js');
 
 var Recipe = require('../models/recipe.model').model;
 var recipeService = require('../services/recipe.service');
