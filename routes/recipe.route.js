@@ -2,7 +2,9 @@
 
 var express = require('express');
 var router = express.Router();
+var validateReq = require('express-validation');
 
+var Recipe = require('../models/recipe.model').model;
 var recipeService = require('../services/recipe.service');
 
 router.route('/recipes')
@@ -11,6 +13,15 @@ router.route('/recipes')
               if (err) return next(err);
 
               return res.json(recipes);
+          });
+    })
+    .post(validateReq(scenario.recipe.new), function(req, res, next) {
+          var recipe = new Recipe();
+          recipe.name = req.body.recipe;
+          recipeService.saveRecipe(recipe, function(err, recipe) {
+              if (err) return next(err);
+              
+              return res.status(201).json(recipe);
           });
     })
     

@@ -9,3 +9,11 @@ exports.getRecipes = function(done) {
         return done(null, recipes);
     });
 }
+
+exports.saveRecipe = function(recipe, done) {
+    recipe.save(function(err) {
+        if (err) return done(err);
+        
+        return done(null, recipe);
+    });
+}
