@@ -1,27 +1,21 @@
 var express = require("express");
-var request = require("request");
 var bodyParser = require("body-parser");
 
-var postback = require('./services/postback.service');
-var message = require('./services/message.service');
+var webhookRouter = require("./routes/webhook");
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.listen((process.env.PORT || 5000));
 
-app.post("/webhook", function (req, res) {
-    if (req.body.object == "page") {
-        req.body.entry.forEach(function(entry) {
-            entry.messaging.forEach(function(event) {
-                if (event.postback) {
-                    postback.process(event);
-                }
-                else if (event.message) {
-                    message.process(event);
-                }
-            });
-        });
-        res.sendStatus(200);
+var server = app.listen((process.env.PORT || 5000));
+
+app.use('/v1', [webhookRouter]);
+app.use(function(err, req, res, next) {
+    console.log(err);
+    if(err.name == 'ValidationError' || err.message == 'validation error') {
+        return res.status(422).send(err);
     }
+    return res.status(500).send(err);
 });
+
+module.exports = server;
