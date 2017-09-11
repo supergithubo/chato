@@ -2,6 +2,9 @@ var express = require("express");
 var request = require("request");
 var bodyParser = require("body-parser");
 
+var postback = require('./services/postback.service');
+var message = require('./services/message.service');
+
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -12,77 +15,13 @@ app.post("/webhook", function (req, res) {
         req.body.entry.forEach(function(entry) {
             entry.messaging.forEach(function(event) {
                 if (event.postback) {
-                    processPostback(event);
+                    postback.process(event);
                 }
                 else if (event.message) {
-                    processMessage(event);
+                    message.process(event);
                 }
             });
         });
         res.sendStatus(200);
     }
 });
-
-function processPostback(event) {
-    var senderId = event.sender.id;
-    var payload = event.postback.payload;
-
-    if (payload === "Greeting") {
-    
-    request({
-        url: "https://graph.facebook.com/v2.10/" + senderId,
-        qs: {
-            access_token: process.env.PAGE_ACCESS_TOKEN,
-            fields: "first_name"
-        },
-        method: "GET"
-    }, function(error, response, body) {
-        var greeting = "";
-        if (error) {
-            console.log("Error getting user's name: " +  error);
-        } else {
-            var bodyObj = JSON.parse(body);
-            name = bodyObj.first_name;
-            greeting = "Hi " + name + ". ";
-        }
-        var message = greeting + "My name is Chato Bot.";
-        sendMessage(senderId, { text: message });
-    });
-  }
-}
-
-function processMessage(event) {
-    if (!event.message.is_echo) {
-        var message = event.message;
-        var senderId = event.sender.id;
-
-        console.log("Received message from senderId: " + senderId);
-        console.log("Message is: " + JSON.stringify(message));
-
-        if (message.text) {
-            var formattedMsg = message.text.toLowerCase().trim();
-            
-            sendMessage(senderId, {text: formattedMsg});
-        } else if (message.attachments) {
-            sendMessage(senderId, {text: "Sorry, I don't understand your request."});
-        }
-    }
-}
-
-function sendMessage(recipientId, message) {
-    request({
-        url: "https://graph.facebook.com/v2.10/me/messages",
-        qs: { 
-            access_token: process.env.PAGE_ACCESS_TOKEN 
-        },
-        method: "POST",
-        json: {
-            recipient: { id: recipientId },
-            message: message,
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log("Error sending message: " + response.error);
-        }
-    });
-}
