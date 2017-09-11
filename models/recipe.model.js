@@ -1,8 +1,8 @@
 // models/recipe.model.js
 
 var mongoose = require('mongoose');
-var inputSchema = require('./input.model,').schema;
-var outputSchema = require('./output.model,').schema;
+var inputSchema = require('./input.model').schema;
+var outputSchema = require('./output.model').schema;
 
 var RecipeSchema = new mongoose.Schema({
     name: {
