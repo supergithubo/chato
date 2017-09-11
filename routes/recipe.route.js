@@ -18,7 +18,7 @@ router.route('/recipes')
     })
     .post(validateReq(scenario.recipe.new), function(req, res, next) {
           var recipe = new Recipe();
-          recipe.name = req.body.recipe;
+          recipe.name = req.body.name;
           recipeService.saveRecipe(recipe, function(err, recipe) {
               if (err) return next(err);
               
