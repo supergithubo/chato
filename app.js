@@ -36,8 +36,10 @@ console.log('Listening on port ' + port);
 // Database Start
 // =============================================================================
 
+var uri = process.env.DB_URI;
+
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.DB_URI, {
+mongoose.connect(uri, {
     useMongoClient: true
 });
 
@@ -45,7 +47,7 @@ var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'Connection error: '));
 db.once('open', function() {
-    console.log('Connected to database on ' + config.db.uri);
+    console.log('Connected to database on ' + uri);
 });
 
 module.exports = server;
