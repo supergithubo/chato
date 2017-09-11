@@ -11,6 +11,11 @@ var RecipeSchema = new mongoose.Schema({
     },
     inputs: [inputSchema],
     outputs: [outputSchema],
+    priority: {
+        type: Number,
+        default: 0,
+        required: true
+    }
 });
 
 exports.schema = RecipeSchema;

@@ -19,6 +19,7 @@ router.route('/recipes')
     .post(validateReq(scenario.recipe.new), function(req, res, next) {
           var recipe = new Recipe();
           recipe.name = req.body.name;
+          recipe.priority = req.body.priority;
           recipeService.saveRecipe(recipe, function(err, recipe) {
               if (err) return next(err);
               
@@ -41,6 +42,7 @@ router.route('/recipes/:recipe_id')
                 if (!recipe) return res.status(404).send('Recipe not found');
                 
                 recipe.name = req.body.name !== undefined ? req.body.name : recipe.name;
+                recipe.priority = req.body.priority !== undefined ? req.body.priority : recipe.priority;
                 recipeService.saveRecipe(recipe, function(err, recipe) {
                     if (err) return next(err);
                     

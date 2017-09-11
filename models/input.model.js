@@ -8,7 +8,7 @@ var InputSchema = new mongoose.Schema({
         type: String,
         enum: {
             values: types.keys,
-            message: '`{VALUE}` role currently not supported'
+            message: '`{VALUE}` input type currently not supported'
         },
         required: true,
         default: types.enum.COMMAND.key
