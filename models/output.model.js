@@ -4,6 +4,11 @@ var mongoose = require('mongoose');
 var types = require('./output-types.enum');
 
 var OutputSchema = new mongoose.Schema({
+    recipe: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Recipe',
+        required: 'recipe is required',
+    },
     type: {
         type: String,
         enum: {
@@ -15,6 +20,11 @@ var OutputSchema = new mongoose.Schema({
     },
     value: {
         type: String,
+        required: true
+    },
+    priority: {
+        type: Number,
+        default: 0,
         required: true
     }
 });

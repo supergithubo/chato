@@ -36,7 +36,7 @@ router.route('/recipes/:recipe_id')
                 return res.json(recipe);
           });
     })
-    .put(function(req, res, next) {
+    .put(validateReq(scenario.recipe.update), function(req, res, next) {
           recipeService.getRecipe(req.params.recipe_id, function(err, recipe) {
                 if (err) return next(err);
                 if (!recipe) return res.status(404).send('Recipe not found');
@@ -55,7 +55,7 @@ router.route('/recipes/:recipe_id')
                 if (err) return next(err);
                 if (!recipe) return res.status(404).send('Recipe not found');
                 
-                recipeService.deleteRecipe(recipe, function(err) {
+                recipeService.deleteRecipe(recipe._id, function(err) {
                     if (err) return next(err);
                     
                     return res.status(204).send();
