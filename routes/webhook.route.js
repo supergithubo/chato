@@ -3,16 +3,15 @@
 var express = require('express');
 var router = express.Router();
 
-var postback = require('../services/postback.service');
-var message = require('../services/message.service');
+var postback = require('../services/callbacks/postback.service');
+var message = require('../services/callbacks/message.service');
+var errorhandler = require('../helpers/errorhandler');
 
 router.route('/webhook')
     .get(function(req, res, next) {
         if (req.query["hub.verify_token"] === process.env.VERIFICATION_TOKEN) {
-            console.log("Verified webhook");
             return res.status(200).send(req.query["hub.challenge"]);
         } else {
-            console.error("Verification failed. The tokens do not match.");
             return res.status(403).send();
         }
     })
@@ -25,6 +24,9 @@ router.route('/webhook')
                     }
                     else if (event.message) {
                         message.process(event);
+                    }
+                    else {
+                        errorhandler.handle({ message: "Callback not supported", code: 405 });
                     }
                 });
             });
