@@ -31,7 +31,7 @@ describe('postback callback', function() {
         };
         
         requestStub.get = function (options, callback) {
-            callback(null, null, { "first_name": "Winston", "id": "100000969297090" });
+            callback(null, null, '{ "first_name": "Winston", "id": "100000969297090" }');
         };
         
         service.process({

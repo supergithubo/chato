@@ -20,7 +20,8 @@ exports.process = function(event) {
             if (error) {
                 errorhandler.handle(response.error);
             } else {
-                name = body.first_name;
+                var bodyObj = JSON.parse(body);
+                name = bodyObj.first_name;
                 greeting = "Hi " + name + ". ";
             }
             
