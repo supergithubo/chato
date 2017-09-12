@@ -10,14 +10,14 @@ router.route('/webhook')
     .get(function(req, res, next) {
         if (req.query["hub.verify_token"] === process.env.VERIFICATION_TOKEN) {
             console.log("Verified webhook");
-            res.status(200).send(req.query["hub.challenge"]);
+            return res.status(200).send(req.query["hub.challenge"]);
         } else {
             console.error("Verification failed. The tokens do not match.");
-            res.sendStatus(403);
+            return res.status(403).send();
         }
     })
     .post(function(req, res, next) {
-        if (req.body.object == "page") {
+        if (req.body.object === 'page') {
             req.body.entry.forEach(function(entry) {
                 entry.messaging.forEach(function(event) {
                     if (event.postback) {
@@ -29,6 +29,8 @@ router.route('/webhook')
                 });
             });
             res.status(200).send();
+        } else {
+            return res.status(405).send();
         }
     });
     
